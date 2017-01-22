@@ -1,4 +1,4 @@
-﻿// Copyright(c) 2007 Andreas Gullberg Larsen
+﻿// Copyright © 2007 Andreas Gullberg Larsen (anjdreas@gmail.com).
 // https://github.com/anjdreas/UnitsNet
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,10 +19,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using NUnit.Framework;
+
 namespace UnitsNet.Tests.CustomCode
 {
     public class TemperatureTests : TemperatureTestsBase
     {
+        private static readonly Temperature DegreesCelsius20 = Temperature.FromDegreesCelsius(20);
+        private static readonly Temperature DegreesCelsius30 = Temperature.FromDegreesCelsius(30);
+        private static readonly Temperature DegreesCelsius10 = Temperature.FromDegreesCelsius(10);
+        private static readonly TemperatureDelta DegreesCelsiusDelta20 = TemperatureDelta.FromDegreesCelsiusDelta(20);
+
         protected override double DegreesCelsiusInOneKelvin => -272.15;
 
         protected override double DegreesDelisleInOneKelvin => 558.2249999999999;
@@ -38,5 +45,53 @@ namespace UnitsNet.Tests.CustomCode
         protected override double DegreesRoemerInOneKelvin => -135.378750000;
 
         protected override double KelvinsInOneKelvin => 1;
+
+//        [Test]
+//        public void DoubleMultipliedByTemperatureEqualsTemperature()
+//        {
+//            Assert.AreEqual(Temperature.FromDegreesCelsius(60), 3 * DegreesCelsius20);
+//        }
+
+        [Test]
+        public void TemperatureDeltaPlusTemperatureEqualsTemperature()
+        {
+            Assert.AreEqual(Temperature.FromDegreesCelsius(30), DegreesCelsiusDelta20 + DegreesCelsius10);
+        }
+
+//        [Test]
+//        public void TemperatureDividedByDoubleEqualsTemperature()
+//        {
+//            Assert.AreEqual(Temperature.FromDegreesCelsius(10), DegreesCelsius20 / 2);
+//        }
+
+        [Test]
+        public void TemperatureMinusTemperatureDeltaEqualsTemperature()
+        {
+            Assert.AreEqual(Temperature.FromDegreesCelsius(10), DegreesCelsius30 - DegreesCelsiusDelta20);
+        }
+
+        [Test]
+        public void TemperatureMinusTemperatureEqualsTemperatureDelta()
+        {
+            Assert.AreEqual(TemperatureDelta.FromDegreesCelsiusDelta(10), DegreesCelsius30 - DegreesCelsius20);
+        }
+
+//        [Test]
+//        public void TemperatureMultipliedByDoubleEqualsTemperature()
+//        {
+//            Assert.AreEqual(Temperature.FromDegreesCelsius(60), DegreesCelsius20 * 3);
+//        }
+
+//        [Test]
+//        public void TemperatureNegatedEqualsTemperature()
+//        {
+//            Assert.AreEqual(Temperature.FromDegreesCelsius(-10), -DegreesCelsius10);
+//        }
+
+        [Test]
+        public void TemperaturePlusTemperatureDeltaEqualsTemperature()
+        {
+            Assert.AreEqual(Temperature.FromDegreesCelsius(30), DegreesCelsius10 + DegreesCelsiusDelta20);
+        }
     }
 }
